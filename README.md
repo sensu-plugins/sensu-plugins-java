@@ -1,18 +1,18 @@
-## Sensu-Plugins-disk-checks
+## Sensu-Plugins-java
 
-[![Build Status](https://travis-ci.org/sensu-plugins/sensu-plugins-java.svg?branch=master)][1]
-[![Gem Version](https://badge.fury.io/rb/sensu-plugins-java.svg)][2]
-[![Code Climate](https://codeclimate.com/github/sensu-plugins/sensu-plugins-java/badges/gpa.svg)][3]
-[![Test Coverage](https://codeclimate.com/github/sensu-plugins/sensu-plugins-java/badges/coverage.svg)][4]
-[![Dependency Status](https://gemnasium.com/sensu-plugins/sensu-plugins-java.svg)][5]
+[![Build Status](https://travis-ci.org/sensu-plugins/sensu-plugins-java.svg?branch=master)](https://travis-ci.org/sensu-plugins/sensu-plugins-java)
+[![Gem Version](https://badge.fury.io/rb/sensu-plugins-java.svg)](http://badge.fury.io/rb/sensu-plugins-java)
+[![Code Climate](https://codeclimate.com/github/sensu-plugins/sensu-plugins-java/badges/gpa.svg)](https://codeclimate.com/github/sensu-plugins/sensu-plugins-java)
+[![Test Coverage](https://codeclimate.com/github/sensu-plugins/sensu-plugins-java/badges/coverage.svg)](https://codeclimate.com/github/sensu-plugins/sensu-plugins-java)
+[![Dependency Status](https://gemnasium.com/sensu-plugins/sensu-plugins-java.svg)](https://gemnasium.com/sensu-plugins/sensu-plugins-java)
 
 ## Functionality
 
 ## Files
- *
- *
- *
- *
+ * bin/check-java-permgen
+ * bin/java-heap-pcnt.sh
+ * bin/metrics-java-heap-graphite
+ * bin/metrics-jstat
 
 ## Usage
 
