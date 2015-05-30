@@ -22,11 +22,10 @@ Gem::Specification.new do |s|
   s.license                = 'MIT'
   s.metadata               = { 'maintainer'         => '',
                                'development_status' => 'active',
-                               'production_status'  => 'unstable - testing reccomended',
+                               'production_status'  => 'unstable - testing recommended',
                                'release_draft'      => 'false',
                                'release_prerelease' => 'false'
-                              }
-
+  }
   s.name                   = 'sensu-plugins-java'
   s.platform               = Gem::Platform::RUBY
   s.post_install_message   = 'You can use the embedded Ruby by setting EMBEDDED_RUBY=true in /etc/default/sensu'
@@ -35,7 +34,7 @@ Gem::Specification.new do |s|
   s.signing_key            = File.expand_path(pvt_key) if $PROGRAM_NAME =~ /gem\z/
   s.summary                = 'Sensu plugins for Java'
   s.test_files             = s.files.grep(%r{^(test|spec|features)/})
-  s.version                = SensuPluginsJava::VERSION
+  s.version                = SensuPluginsJava::Version::VER_STRING
 
   s.add_runtime_dependency 'sensu-plugin', '1.1.0'
   s.add_runtime_dependency 'english', '0.6.3'
