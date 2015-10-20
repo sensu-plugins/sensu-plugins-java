@@ -267,5 +267,7 @@ class JstatMetricsToGraphiteFormat(object):
       print "%s.%s.jvm.class.%s %s %d" % (graphite_base, options.service,
           metric, class_stats[metric], now)
 
+    sys.exit(0)
+
 if '__main__' == __name__:
   JstatMetricsToGraphiteFormat().main()
