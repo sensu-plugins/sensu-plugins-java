@@ -202,7 +202,7 @@ class JstatMetricsToGraphiteFormat(object):
 
     # Get lvmid (JVM id)
     try :
-      jps_out = check_output(["jps"])
+      jps_out = check_output(["jps", "-v"])
     except Exception as e:
       if options.debug:
         print e
