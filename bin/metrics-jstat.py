@@ -202,7 +202,7 @@ class JstatMetricsToGraphiteFormat(object):
 
     # Get lvmid (JVM id)
     try :
-      jps_out = check_output(["jps"])
+      jps_out = check_output(["jps", "-v"])
     except Exception as e:
       if options.debug:
         print e
@@ -266,6 +266,8 @@ class JstatMetricsToGraphiteFormat(object):
     for metric in class_stats:
       print "%s.%s.jvm.class.%s %s %d" % (graphite_base, options.service,
           metric, class_stats[metric], now)
+
+    sys.exit(0)
 
 if '__main__' == __name__:
   JstatMetricsToGraphiteFormat().main()
