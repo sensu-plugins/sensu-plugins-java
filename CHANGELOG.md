@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+
+## [0.0.4] - 2016-04-26
 ### Changed
 - metrics-jstat.py: run jps with the verbose flag to allow for matching on the entire command line
 - rename java-heap-pcnt to check-java-heap-pcnt. java-heap-pcnt will be removed in a future release
@@ -30,6 +32,7 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.3...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.4...HEAD
+[0.0.4]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.3...0.0.4
 [0.0.3]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.2...0.0.3
 [0.0.2]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.1...0.0.2
