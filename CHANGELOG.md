@@ -6,7 +6,7 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 ## [Unreleased]
 ### Changed
 - metrics-jstat.py: run jps with the verbose flag to allow for matching on the entire command line
-- rename java-heap-pcnt to check-jeaa-heap-pcnt. java-heap-pcnt will be removed in a future release
+- rename java-heap-pcnt to check-java-heap-pcnt. java-heap-pcnt will be removed in a future release
 
 ### Added
 - add binstubs for non-ruby scripts
