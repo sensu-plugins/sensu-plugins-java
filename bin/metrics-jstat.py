@@ -35,9 +35,51 @@
 import logging
 import logging.handlers
 import optparse
-from subprocess import check_output
 import sys
 import time
+
+"""
+Python 2.6 support for check_output:
+http://stackoverflow.com/questions/4814970/subprocess-check-output-doesnt-seem-to-exist-python-2-6-5
+"""
+try:
+    from subprocess import STDOUT, check_output, CalledProcessError
+except ImportError:  # pragma: no cover
+    # python 2.6 doesn't include check_output
+    # monkey patch it in!
+    import subprocess
+    STDOUT = subprocess.STDOUT
+
+    def check_output(*popenargs, **kwargs):
+        if 'stdout' in kwargs:  # pragma: no cover
+            raise ValueError('stdout argument not allowed, '
+                             'it will be overridden.')
+        process = subprocess.Popen(stdout=subprocess.PIPE,
+                                   *popenargs, **kwargs)
+        output, _ = process.communicate()
+        retcode = process.poll()
+        if retcode:
+            cmd = kwargs.get("args")
+            if cmd is None:
+                cmd = popenargs[0]
+            raise subprocess.CalledProcessError(retcode, cmd,
+                                                output=output)
+        return output
+    subprocess.check_output = check_output
+
+    # overwrite CalledProcessError due to `output`
+    # keyword not being available (in 2.6)
+    class CalledProcessError(Exception):
+
+        def __init__(self, returncode, cmd, output=None):
+            self.returncode = returncode
+            self.cmd = cmd
+            self.output = output
+
+        def __str__(self):
+            return "Command '%s' returned non-zero exit status %d" % (
+                self.cmd, self.returncode)
+    subprocess.CalledProcessError = CalledProcessError
 
 class JstatMetricsToGraphiteFormat(object):
   '''Prints jstat metrics to stdout in graphite format

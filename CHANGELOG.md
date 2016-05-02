@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+- metrics-jstat.py: support added for py2.6 (RHEL/CentOS 6.x)
 
 ## [0.0.4] - 2016-04-26
 ### Changed
