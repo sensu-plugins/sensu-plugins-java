@@ -33,6 +33,7 @@ HELP="
         -w --> Warning Percentage < value
         -c --> Critical Percentage < value
         -o --> options to pass to jps
+        -j --> path to java bin dir (include trailing /)
         -p --> print out performance data
         -h --> print this help screen
 "
