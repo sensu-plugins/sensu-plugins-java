@@ -3,8 +3,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
-## [Unreleased]
+## [0.0.5] - 2016-11-02
+### Changed
 - metrics-jstat.py: support added for py2.6 (RHEL/CentOS 6.x)
+- check-java-heap-pcnt.sh: add -j option to specify location of java binaries
+- check-java-heap-pcnt.sh: add -o option to allow specifying command line arguments to jps
 
 ## [0.0.4] - 2016-04-26
 ### Changed
