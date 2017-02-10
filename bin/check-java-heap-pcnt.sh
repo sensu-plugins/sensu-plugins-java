@@ -28,6 +28,7 @@ done
 # usage
 HELP="
     usage: $0 [ -n value -w value -c value -o value -p -h ]
+    
         -n --> Name of JVM process < value
         -w --> Warning Percentage < value
         -c --> Critical Percentage < value
