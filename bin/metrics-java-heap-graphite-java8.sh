@@ -34,7 +34,7 @@ NAME=${NAME:=0}
 
 #Get PIDs of JVM.
 #At this point grep for the names of the java processes running your jvm.
-PID=$(sudo jps | grep $NAME | awk '{ print $1}')
+PID=$(sudo jps | grep "$NAME" | awk '{ print $1}')
 for PID in $PIDS
 do
   #Get heap capacity of JVM
