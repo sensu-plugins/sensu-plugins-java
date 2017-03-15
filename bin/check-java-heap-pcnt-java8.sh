@@ -50,7 +50,7 @@ JAVA_BIN=${JAVA_BIN:=""}
 
 #Get PIDs of JVM.
 #At this point grep for the names of the java processes running your jvm.
-PIDS=$(sudo ${JAVA_BIN}jps $OPTIONS | grep $NAME | awk '{ print $1}')
+PIDS=$(sudo ${JAVA_BIN}jps $OPTIONS | grep " $NAME$" | awk '{ print $1}')
 
 projectSize=$(printf "%s\n" $(printf "$PIDS" | wc -w))
 
