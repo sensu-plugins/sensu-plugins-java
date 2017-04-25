@@ -35,6 +35,11 @@ NAME=${NAME:=0}
 #Get PID of JVM.
 #At this point grep for the name of the java process running your jvm.
 PID=$(sudo jps | grep " $NAME$" | awk '{ print $1}')
+COUNT=$(echo $PID | wc -w)
+if [ $COUNT != 1 ]; then
+    echo "$COUNT java process(es) found with name $NAME"
+    exit 3
+fi
 
 #Get heap capacity of JVM
 TotalHeap=$(sudo jstat -gccapacity $PID  | tail -n 1 | awk '{ print ($4 + $5 + $6 + $10) / 1024 }')
