@@ -60,7 +60,7 @@ fi
 TotalHeap=$(sudo ${JAVA_BIN}jstat -gccapacity $PID  | tail -n 1 | awk '{ print ($4 + $5 + $6 + $10) / 1024 }')
 
 #Determine amount of used heap JVM is using
-UsedHeap=$(sudo ${JAVA_BIN}jstat -gc $PID  | tail -n 1 | awk '{ print ($3 + $4 + $6 + $8 + $10) / 1024 }')
+UsedHeap=$(sudo ${JAVA_BIN}jstat -gc $PID  | tail -n 1 | awk '{ print ($3 + $4 + $6 + $8) / 1024 }')
 
 #Get heap usage percentage
 HeapPer=$(echo "scale=3; $UsedHeap / $TotalHeap * 100" | bc -l| cut -d "." -f1)
