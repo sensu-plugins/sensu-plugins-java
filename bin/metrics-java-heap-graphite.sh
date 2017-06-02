@@ -45,7 +45,7 @@ fi
 TotalHeap=$(sudo jstat -gccapacity $PID  | tail -n 1 | awk '{ print ($4 + $5 + $6 + $10) / 1024 }')
 
 #Determine amount of used heap JVM is using
-UsedHeap=$(sudo jstat -gc $PID  | tail -n 1 | awk '{ print ($3 + $4 + $6 + $8 + $10) / 1024 }')
+UsedHeap=$(sudo jstat -gc $PID  | tail -n 1 | awk '{ print ($3 + $4 + $6 + $8) / 1024 }')
 
 #Determine Old Space Utilization
 OldGen=$(sudo jstat -gc $PID  | tail -n 1 | awk '{ print ($8) / 1024 }')
