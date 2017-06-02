@@ -3,6 +3,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
+## [0.0.next] - 2017-06-02
+### Changed
+- java-heap-pcnt.sh and metrics-java-heap-graphite.sh: removed extra column from 'UsedHeap'
+
 ## [0.0.5] - 2016-11-02
 ### Changed
 - metrics-jstat.py: support added for py2.6 (RHEL/CentOS 6.x)
