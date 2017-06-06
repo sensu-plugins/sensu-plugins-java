@@ -6,10 +6,11 @@
 # Date: 2013-9-30
 # Modified: Mario Harvey - badmadrad.com
 
-# You must have openjdk-7-jdk and openjdk-7-jre packages installed
-# http://openjdk.java.net/install/
+# Date: 2017-06-06
+# Modified: Nic Scott - re-work to be java version agnostic
 
-# Also make sure the user "sensu" can sudo without password
+# depends on jps and jstat in openjdk-devel
+# Also make sure the user "sensu" can sudo jps and jstat without password
 
 # #RED
 while getopts 'w:c:n:o:j:hp' OPT; do
@@ -56,11 +57,22 @@ if [ $COUNT != 1 ]; then
     exit 3
 fi
 
-#Get heap capacity of JVM
-TotalHeap=$(sudo ${JAVA_BIN}jstat -gccapacity $PID  | tail -n 1 | awk '{ print ($4 + $5 + $6 + $10) / 1024 }')
+JSTAT=$(sudo ${JAVA_BIN}jstat -gc $PID  | tail -n 1)
 
-#Determine amount of used heap JVM is using
-UsedHeap=$(sudo ${JAVA_BIN}jstat -gc $PID  | tail -n 1 | awk '{ print ($3 + $4 + $6 + $8) / 1024 }')
+# Java 8 jstat -gc returns 17 columns Java 7 returns 15
+if [[ ${#JSTAT[@]} -gt 15 ]]; then
+  # Metaspace is not a part of heap in Java 8
+  #Get heap capacity of JVM
+	TotalHeap=$(echo $JSTAT | awk '{ print ($1 + $2 + $5 + $7) / 1024 }')
+	#Determine amount of used heap JVM is using
+	UsedHeap=$(echo $JSTAT | awk '{ print ($3 + $4 + $6 + $8) / 1024 }')
+else
+  # PermGen is part of heap in Java <8
+  #Get heap capacity of JVM
+  TotalHeap=$(echo $JSTAT | awk '{ print ($1 + $2 + $5 + $7 + $9) / 1024 }')
+  #Determine amount of used heap JVM is using
+  UsedHeap=$(echo $JSTAT | awk '{ print ($3 + $4 + $6 + $8 + $10) / 1024 }')
+fi
 
 #Get heap usage percentage
 HeapPer=$(echo "scale=3; $UsedHeap / $TotalHeap * 100" | bc -l| cut -d "." -f1)
