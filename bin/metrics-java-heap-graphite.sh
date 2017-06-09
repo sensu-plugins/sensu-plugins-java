@@ -1,67 +1,97 @@
 #!/usr/bin/env bash
 #
-# Collect metrics on your JVM and allow you to trace usage in graphite
+# Collect metrics on your JVMs and allow you to trace usage in graphite
 
 # Modified: Mario Harvey - badmadrad.com
 
-# You must have openjdk-7-jdk and openjdk-7-jre packages installed
+# Date: 2017-06-06
+# Modified: Nic Scott - re-work to be java version agnostic
+
+# depends on jps and jstat in openjdk-devel in openjdk-<VERSION>-jdk and
+# openjdk-<VERSION>-jre packages being installed
 # http://openjdk.java.net/install/
 
-# Also make sure the user "sensu" can sudo without password
+# Also make sure the user "sensu" can sudo jps and jstat without password
 
-# #RED
 while getopts 's:n:h' OPT; do
-case $OPT in
-s) SCHEME=$OPTARG;;
-n) NAME=$OPTARG;;
-h) hlp="yes";;
-esac
+  case $OPT in
+    s) SCHEME=$OPTARG;;
+    n) NAME=$OPTARG;;
+    h) hlp="yes";;
+  esac
 done
+
 #usage
 HELP="
-        usage $0 [ -n value -s value -h ]
-                -n --> NAME or name of jvm process < value
-		-s --> SCHEME or server name ex. :::name::: < value
-                -h --> print this help screen
+usage $0 [ -n value -s value -h ]
+-n --> NAME or name of jvm process < value
+-s --> SCHEME or server name ex. :::name::: < value
+-h --> print this help screen
 "
 if [ "$hlp" = "yes" ]; then
-        echo "$HELP"
-        exit 0
-        fi
+  echo "$HELP"
+  exit 0
+fi
 
 SCHEME=${SCHEME:=0}
 NAME=${NAME:=0}
+JAVA_BIN=${JAVA_BIN:=""}
 
 #Get PID of JVM.
 #At this point grep for the name of the java process running your jvm.
-PID=$(sudo jps | grep " $NAME$" | awk '{ print $1}')
+PIDS=$(sudo ${JAVA_BIN}jps $OPTIONS | grep " $NAME$" | awk '{ print $1 }')
 COUNT=$(echo $PID | wc -w)
-if [ $COUNT != 1 ]; then
-    echo "$COUNT java process(es) found with name $NAME"
-    exit 3
-fi
+for PID in $PIDS
+do
 
-#Get heap capacity of JVM
-TotalHeap=$(sudo jstat -gccapacity $PID  | tail -n 1 | awk '{ print ($4 + $5 + $6 + $10) / 1024 }')
+  project=$(sudo jps | grep $PID | awk '{ print $2 }' | cut -d. -f1)
 
-#Determine amount of used heap JVM is using
-UsedHeap=$(sudo jstat -gc $PID  | tail -n 1 | awk '{ print ($3 + $4 + $6 + $8) / 1024 }')
+  JSTAT=$(sudo ${JAVA_BIN}jstat -gc $PID  | tail -n 1)
 
-#Determine Old Space Utilization
-OldGen=$(sudo jstat -gc $PID  | tail -n 1 | awk '{ print ($8) / 1024 }')
+  # Java version indifferent memory stats
+  #Determine Old Space Utilization
+  OldGen=$(echo $JSTAT | awk '{ print ($8) / 1024 }')
 
-#Determine Permanent Space Utilization
-PermGen=$(sudo jstat -gc $PID  | tail -n 1 | awk '{ print ($10) / 1024 }')
+  #Determine Eden Space Utilization
+  ParEden=$(echo $JSTAT | awk '{ print ($6) / 1024 }')
 
-#Determine Eden Space Utilization
-ParEden=$(sudo jstat -gc $PID  | tail -n 1 | awk '{ print ($6) / 1024 }')
+  #Determine Survivor Space utilization
+  ParSurv=$(echo $JSTAT | awk '{ print ($3 + $4) / 1024 }')
 
-#Determine Survivor Space utilization
-ParSurv=$(sudo jstat -gc $PID  | tail -n 1 | awk '{ print ($3 + $4) / 1024 }')
+  # Java version-specific memory stats
+  # Java 8 jstat -gc returns 17 columns Java 7 returns 15
+  if [[ ${#JSTAT[@]} -gt 15 ]]; then
+    # Metaspace is NOT a part of heap in Java 8
+    #Get heap capacity of JVM
+    TotalHeap=$(echo $JSTAT | awk '{ print ($1 + $2 + $5 + $7) / 1024 }')
+    #Determine amount of used heap JVM is using
+    UsedHeap=$(echo $JSTAT | awk '{ print ($3 + $4 + $6 + $8) / 1024 }')
+    #Get MetaSpace capacity of JVM
+    TotalMeta=$(echo $JSTAT | awk '{ print ($9) / 1024 }')
+    #Determine Meta Space Utilization
+    UsedMeta=$(echo $JSTAT | awk '{ print ($10) / 1024 }')
 
-echo "JVMs.$SCHEME.Committed_Heap $TotalHeap `date '+%s'`"
-echo "JVMs.$SCHEME.Used_Heap $UsedHeap `date '+%s'`"
-echo "JVMs.$SCHEME.Eden_Util $ParEden `date '+%s'`"
-echo "JVMs.$SCHEME.Survivor_Util $ParSurv `date '+%s'`"
-echo "JVMs.$SCHEME.Old_Util $OldGen `date '+%s'`"
-echo "JVMs.$SCHEME.Perm_Util $PermGen `date '+%s'`"
+    echo "JVMs.$SCHEME.$project.Meta_Capacity $TotalMeta `date '+%s'`"
+    echo "JVMs.$SCHEME.$project.Meta_Util $UsedMeta `date '+%s'`"
+
+  else
+    # PermGen IS part of heap in Java <8
+    #Get heap capacity of JVM
+    TotalHeap=$(echo $JSTAT | awk '{ print ($1 + $2 + $5 + $7 + $9) / 1024 }')
+    #Determine amount of used heap JVM is using
+    UsedHeap=$(echo $JSTAT | awk '{ print ($3 + $4 + $6 + $8 + $10) / 1024 }')
+    #Get PermGen capacity of JVM
+    TotalPerm=$(echo $JSTAT | awk '{ print ($9) / 1024 }')
+    #Determine PermGen Space Utilization
+    UsedPerm=$(echo $JSTAT | awk '{ print ($10) / 1024 }')
+
+    echo "JVMs.$SCHEME.$project.Perm_Capacity $TotalPerm `date '+%s'`"
+    echo "JVMs.$SCHEME.$project.Perm_Util $UsedPerm `date '+%s'`"
+  fi
+  echo "JVMs.$SCHEME.$project.Committed_Heap $TotalHeap `date '+%s'`"
+  echo "JVMs.$SCHEME.$project.Heap_Util $UsedHeap `date '+%s'`"
+  echo "JVMs.$SCHEME.$project.Eden_Util $ParEden `date '+%s'`"
+  echo "JVMs.$SCHEME.$project.Survivor_Util $ParSurv `date '+%s'`"
+  echo "JVMs.$SCHEME.$project.Old_Util $OldGen `date '+%s'`"
+
+done

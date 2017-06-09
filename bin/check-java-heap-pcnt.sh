@@ -9,10 +9,12 @@
 # Date: 2017-06-06
 # Modified: Nic Scott - re-work to be java version agnostic
 
-# depends on jps and jstat in openjdk-devel
+# depends on jps and jstat in openjdk-devel in openjdk-<VERSION>-jdk and
+# openjdk-<VERSION>-jre packages being installed
+# http://openjdk.java.net/install/
+
 # Also make sure the user "sensu" can sudo jps and jstat without password
 
-# #RED
 while getopts 'w:c:n:o:j:hp' OPT; do
   case $OPT in
     w)  WARN=$OPTARG;;
@@ -28,14 +30,14 @@ done
 
 # usage
 HELP="
-    usage: $0 [ -n value -w value -c value -o value -p -h ]
-        -n --> Name of JVM process < value
-        -w --> Warning Percentage < value
-        -c --> Critical Percentage < value
-        -o --> options to pass to jps
-        -j --> path to java bin dir (include trailing /)
-        -p --> print out performance data
-        -h --> print this help screen
+usage: $0 [ -n value -w value -c value -o value -p -h ]
+  -n --> Name of JVM process < value
+  -w --> Warning Percentage < value
+  -c --> Critical Percentage < value
+  -o --> options to pass to jps
+  -j --> path to java bin dir (include trailing /)
+  -p --> print out performance data
+  -h --> print this help screen
 "
 
 if [ "$hlp" = "yes" ]; then
@@ -53,8 +55,8 @@ JAVA_BIN=${JAVA_BIN:=""}
 PID=$(sudo ${JAVA_BIN}jps $OPTIONS | grep " $NAME$" | awk '{ print $1}')
 COUNT=$(echo $PID | wc -w)
 if [ $COUNT != 1 ]; then
-    echo "$COUNT java process(es) found with name $NAME"
-    exit 3
+  echo "$COUNT java process(es) found with name $NAME"
+  exit 3
 fi
 
 JSTAT=$(sudo ${JAVA_BIN}jstat -gc $PID  | tail -n 1)
@@ -63,9 +65,9 @@ JSTAT=$(sudo ${JAVA_BIN}jstat -gc $PID  | tail -n 1)
 if [[ ${#JSTAT[@]} -gt 15 ]]; then
   # Metaspace is not a part of heap in Java 8
   #Get heap capacity of JVM
-	TotalHeap=$(echo $JSTAT | awk '{ print ($1 + $2 + $5 + $7) / 1024 }')
-	#Determine amount of used heap JVM is using
-	UsedHeap=$(echo $JSTAT | awk '{ print ($3 + $4 + $6 + $8) / 1024 }')
+  TotalHeap=$(echo $JSTAT | awk '{ print ($1 + $2 + $5 + $7) / 1024 }')
+  #Determine amount of used heap JVM is using
+  UsedHeap=$(echo $JSTAT | awk '{ print ($3 + $4 + $6 + $8) / 1024 }')
 else
   # PermGen is part of heap in Java <8
   #Get heap capacity of JVM
