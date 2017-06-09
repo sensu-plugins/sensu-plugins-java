@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+## Fixed
+- CHANGELOG issues because 0.0.5 was never released
 ## [0.0.6] - 2017-06-09
 ### Changed
 - refactor of check-java-heap-pcnt.sh, metrics-java-heap-graphite.sh made java version agnostic. jstat -gc returns 17 columns and has metaspace in java8. jstat -gc returns 15 columns and has permgen space in java 7, 6. These will work for both versions.
@@ -45,7 +47,8 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 - initial release
 
 [Unreleased]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.6...HEAD
-[0.0.6]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.4...0.0.6
+[0.0.6]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.5...0.0.6
+[0.0.5]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.4...0.0.5
 [0.0.4]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.3...0.0.4
 [0.0.3]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.2...0.0.3
 [0.0.2]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.1...0.0.2
