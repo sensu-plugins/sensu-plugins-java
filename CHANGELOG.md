@@ -4,7 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
-## Fixed
+### Added
+- ruby 2.3 testing on release
+- ruby 2.4.1 testing
+### Fixed
 - CHANGELOG issues because 0.0.5 was never released
 ## [0.0.6] - 2017-06-09
 ### Changed
