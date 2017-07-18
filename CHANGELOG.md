@@ -1,14 +1,23 @@
-#Change Log
+# Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+### Breaking Changes
+- Minimum Ruby runtime version is now 2.0 (@eheydrick)
+
 ### Added
-- ruby 2.3 testing on release
-- ruby 2.4.1 testing
+- ruby 2.3 testing on release (@majormoses)
+- ruby 2.4.1 testing (@majormoses)
+
+### Removed
+- Ruby 1.9.3 from deploy-time testing (@eheydrick)
+
 ### Fixed
-- CHANGELOG issues because 0.0.5 was never released
+- CHANGELOG issues because 0.0.5 was never released (@majormoses)
+
+
 ## [0.0.6] - 2017-06-09
 ### Changed
 - refactor of check-java-heap-pcnt.sh, metrics-java-heap-graphite.sh made java version agnostic. jstat -gc returns 17 columns and has metaspace in java8. jstat -gc returns 15 columns and has permgen space in java 7, 6. These will work for both versions.
