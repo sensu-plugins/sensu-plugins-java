@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+
+## [1.0.0] - 2017-07-24
 ### Breaking Changes
 - Minimum Ruby runtime version is now 2.0 (@eheydrick)
 
@@ -58,7 +60,8 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.6...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-java/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.6...1.0.0
 [0.0.6]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.5...0.0.6
 [0.0.5]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.4...0.0.5
 [0.0.4]: https://github.com/sensu-plugins/sensu-plugins-java/compare/0.0.3...0.0.4
