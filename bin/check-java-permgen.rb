@@ -36,26 +36,28 @@ class CheckJavaPermGen < Sensu::Plugin::Check::CLI
 
   option :warn, short: '-w WARNLEVEL', default: '85'
   option :crit, short: '-c CRITLEVEL', default: '95'
+  option :as_sudo, short: '-s', description: 'Run as sudo', boolean: true, required: false
 
   def run
     warn_procs = []
     crit_procs = []
     java_pids = []
+    sudo = config[:as_sudo] ? 'sudo ' : ''
 
-    IO.popen('jps -q') do |cmd|
+    IO.popen("#{sudo}jps -q") do |cmd|
       java_pids = cmd.read.split
     end
 
     java_pids.each do |java_proc|
       pgcmx = nil
       pu = nil
-      IO.popen("jstat -gcpermcapacity #{java_proc} 1 1 2>&1") do |cmd|
+      IO.popen("#{sudo}jstat -gcpermcapacity #{java_proc} 1 1 2>&1") do |cmd|
         pgcmx = cmd.read.split[9]
       end
       exit_code = $CHILD_STATUS.exitstatus
       next if exit_code != 0
 
-      IO.popen("jstat -gcold #{java_proc} 1 1 2>&1") do |cmd|
+      IO.popen("#{sudo}jstat -gcold #{java_proc} 1 1 2>&1") do |cmd|
         pu = cmd.read.split[9]
       end
       exit_code = $CHILD_STATUS.exitstatus
