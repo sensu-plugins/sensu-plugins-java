@@ -37,7 +37,7 @@ class CheckJavaPermGen < Sensu::Plugin::Check::CLI
   option :warn, short: '-w WARNLEVEL', default: '85'
   option :crit, short: '-c CRITLEVEL', default: '95'
   option :as_sudo, short: '-s', description: 'Run as sudo', boolean: true, required: false
-  option :java, short: '-j <java bin path, including trailing slash>', default: ''
+  option :java, short: '-j <java bin dir>', description: 'java bin dir, including trailing slash', default: ''
 
   def run
     warn_procs = []
