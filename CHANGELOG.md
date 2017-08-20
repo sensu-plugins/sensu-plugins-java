@@ -5,6 +5,9 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 
 ## [Unreleased]
 
+### Added
+- check-java-permgen.rb: added an option to specify java bin dir (@sovaa)
+
 ## [1.1.0] - 2017-08-12
 ### Added
 - check-java-permgen.rb: added an option to run `jps` and `jstsat` with sudo (@sovaa)
