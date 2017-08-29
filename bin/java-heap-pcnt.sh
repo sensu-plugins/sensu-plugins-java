@@ -6,6 +6,9 @@
 # Date: 2013-9-30
 # Modified: Mario Harvey - badmadrad.com
 
+# Date: 2018-08-30
+# Modified: Juan Moreno Martinez - Change MAX HEAP instead Current HEAP
+
 # You must have openjdk-7-jdk and openjdk-7-jre packages installed
 # http://openjdk.java.net/install/
 
@@ -53,8 +56,7 @@ if [ $COUNT != 1 ]; then
 fi
 
 #Get heap capacity of JVM
-TotalHeap=$(sudo jstat -gccapacity $PID  | tail -n 1 | awk '{ print ($4 + $5 + $6 + $10) / 1024 }')
-
+TotalHeap=$(sudo jstat -gccapacity $PID  | tail -n 1 | awk '{ print ($2 + $8) / 1024 }')
 #Determine amount of used heap JVM is using
 UsedHeap=$(sudo jstat -gc $PID  | tail -n 1 | awk '{ print ($3 + $4 + $6 + $8 + $10) / 1024 }')
 

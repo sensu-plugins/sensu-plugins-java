@@ -9,6 +9,9 @@
 # Date: 2017-06-06
 # Modified: Nic Scott - re-work to be java version agnostic
 
+# Date: 2018-08-30
+# Modified: Juan Moreno Martinez - Change MAX HEAP instead Current HEAP and fix bug java agnostic
+
 # depends on jps and jstat in openjdk-devel in openjdk-<VERSION>-jdk and
 # openjdk-<VERSION>-jre packages being installed
 # http://openjdk.java.net/install/
@@ -60,18 +63,15 @@ if [ $COUNT != 1 ]; then
 fi
 
 JSTAT=$(sudo ${JAVA_BIN}jstat -gc $PID  | tail -n 1)
+TotalHeap=$(sudo ${JAVA_BIN}jstat -gccapacity $PID  | tail -n 1 | awk '{ print ($2 + $8) / 1024 }')
 
 # Java 8 jstat -gc returns 17 columns Java 7 returns 15
-if [[ ${#JSTAT[@]} -gt 15 ]]; then
+if [[ $(echo $JSTAT| wc -w) -gt 15 ]]; then
   # Metaspace is not a part of heap in Java 8
-  #Get heap capacity of JVM
-  TotalHeap=$(echo $JSTAT | awk '{ print ($1 + $2 + $5 + $7) / 1024 }')
   #Determine amount of used heap JVM is using
   UsedHeap=$(echo $JSTAT | awk '{ print ($3 + $4 + $6 + $8) / 1024 }')
 else
   # PermGen is part of heap in Java <8
-  #Get heap capacity of JVM
-  TotalHeap=$(echo $JSTAT | awk '{ print ($1 + $2 + $5 + $7 + $9) / 1024 }')
   #Determine amount of used heap JVM is using
   UsedHeap=$(echo $JSTAT | awk '{ print ($3 + $4 + $6 + $8 + $10) / 1024 }')
 fi
