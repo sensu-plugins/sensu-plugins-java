@@ -7,6 +7,9 @@
 # Date: 2017-06-06
 # Modified: Nic Scott - re-work to be java version agnostic
 
+# Date: 2018-08-30
+# Modified: Juan Moreno Martinez - Add MAX HEAP metric and fix bug java agnostic
+
 # depends on jps and jstat in openjdk-devel in openjdk-<VERSION>-jdk and
 # openjdk-<VERSION>-jre packages being installed
 # http://openjdk.java.net/install/
@@ -50,6 +53,9 @@ do
 
   # Java version indifferent memory stats
   #Determine Old Space Utilization
+  MaxHeap=$(echo $JSTAT | tail -n 1 | awk '{ print ($2 + $8) / 1024 }')
+
+  #Determine Old Space Utilization
   OldGen=$(echo $JSTAT | awk '{ print ($8) / 1024 }')
 
   #Determine Eden Space Utilization
@@ -60,7 +66,7 @@ do
 
   # Java version-specific memory stats
   # Java 8 jstat -gc returns 17 columns Java 7 returns 15
-  if [[ ${#JSTAT[@]} -gt 15 ]]; then
+  if [[ $(echo $JSTAT| wc -w) -gt 15 ]]; then
     # Metaspace is NOT a part of heap in Java 8
     #Get heap capacity of JVM
     TotalHeap=$(echo $JSTAT | awk '{ print ($1 + $2 + $5 + $7) / 1024 }')
@@ -88,6 +94,7 @@ do
     echo "JVMs.$SCHEME.$project.Perm_Capacity $TotalPerm `date '+%s'`"
     echo "JVMs.$SCHEME.$project.Perm_Util $UsedPerm `date '+%s'`"
   fi
+  echo "JVMs.$SCHEME.$project.Max_Heap $MaxHeap `date '+%s'`"
   echo "JVMs.$SCHEME.$project.Committed_Heap $TotalHeap `date '+%s'`"
   echo "JVMs.$SCHEME.$project.Heap_Util $UsedHeap `date '+%s'`"
   echo "JVMs.$SCHEME.$project.Eden_Util $ParEden `date '+%s'`"
