@@ -41,7 +41,7 @@ PID=$(sudo jps | grep " $NAME$" | awk '{ print $1}')
 for PID in $PIDS
 do
   #Get max heap capacity of JVM
-  MaxHeap=$(sudo jstat -gccapacity $PID  | tail -n 1 | awk '{ print ($2 + $8) / 1024 }')
+  MaxHeap=$(sudo jmap -heap $PID 2> /dev/null | grep MaxHeapSize | tr -s " " | tail -n1 | awk '{ print $3 /1024 /1024 }')
 
   #Get heap capacity of JVM
   TotalHeap=$(sudo jstat -gccapacity $PID  | tail -n 1 | awk '{ print ($4 + $5 + $6 + $10) / 1024 }')

@@ -52,8 +52,8 @@ do
   JSTAT=$(sudo ${JAVA_BIN}jstat -gc $PID  | tail -n 1)
 
   # Java version indifferent memory stats
-  #Determine Old Space Utilization
-  MaxHeap=$(echo $JSTAT | tail -n 1 | awk '{ print ($2 + $8) / 1024 }')
+  #Determine MaxHeap
+  MaxHeap=$(sudo jmap -heap $PID 2> /dev/null | grep MaxHeapSize | tr -s " " | tail -n1 | awk '{ print $3 /1024 /1024 }')
 
   #Determine Old Space Utilization
   OldGen=$(echo $JSTAT | awk '{ print ($8) / 1024 }')

@@ -15,11 +15,12 @@
 # Also make sure the user "sensu" can sudo without password
 
 # #RED
-while getopts 'w:c:n:hp' OPT; do
+while getopts 'w:c:n:l:hp' OPT; do
   case $OPT in
     w)  WARN=$OPTARG;;
     c)  CRIT=$OPTARG;;
     n)  NAME=$OPTARG;;
+    l)  HEAP_MAX=$OPTARG;;
     h)  hlp="yes";;
     p)  perform="yes";;
     *)  unknown="yes";;
@@ -35,6 +36,16 @@ HELP="
         -c --> Critical Percentage < value
         -p --> print out performance data
         -h --> print this help screen
+        -l --> limit, valid value max or current (default current)
+               current: when -Xms and -Xmx same value
+               max: when -Xms and -Xmx have different values
+
+Requirement: User that launch script must be permisions in sudoers for jps,jstat,jmap
+sudoers lines suggested:
+----------
+sensu ALL=(ALL) NOPASSWD: /usr/bin/jps, /usr/bin/jstat, /usr/bin/jmap
+Defaults:sensu !requiretty
+----------
 "
 
 if [ "$hlp" = "yes" ]; then
@@ -56,7 +67,14 @@ if [ $COUNT != 1 ]; then
 fi
 
 #Get heap capacity of JVM
-TotalHeap=$(sudo jstat -gccapacity $PID  | tail -n 1 | awk '{ print ($2 + $8) / 1024 }')
+if [ "$HEAP_MAX" == "" ] || [ "$HEAP_MAX" == "current" ]; then
+  TotalHeap=$(sudo ${JAVA_BIN}jstat -gccapacity $PID  | tail -n 1 | awk '{ print ($4 + $5 + $6 + $10) / 1024 }')
+elif [[ "$HEAP_MAX" == "max" ]]; then
+  TotalHeap=$(sudo ${JAVA_BIN}jmap -heap $PID 2> /dev/null | grep MaxHeapSize | tr -s " " | tail -n1 | awk '{ print $3 /1024 /1024 }')
+else
+  echo "limit options must be max or current"
+  exit 1
+fi
 #Determine amount of used heap JVM is using
 UsedHeap=$(sudo jstat -gc $PID  | tail -n 1 | awk '{ print ($3 + $4 + $6 + $8 + $10) / 1024 }')
 
