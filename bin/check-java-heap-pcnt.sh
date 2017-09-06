@@ -9,19 +9,23 @@
 # Date: 2017-06-06
 # Modified: Nic Scott - re-work to be java version agnostic
 
+# Date: 2018-08-30
+# Modified: Juan Moreno Martinez - Change MAX HEAP instead Current HEAP and fix bug java agnostic
+
 # depends on jps and jstat in openjdk-devel in openjdk-<VERSION>-jdk and
 # openjdk-<VERSION>-jre packages being installed
 # http://openjdk.java.net/install/
 
 # Also make sure the user "sensu" can sudo jps and jstat without password
 
-while getopts 'w:c:n:o:j:hp' OPT; do
+while getopts 'w:c:n:o:j:l:hp' OPT; do
   case $OPT in
     w)  WARN=$OPTARG;;
     c)  CRIT=$OPTARG;;
     n)  NAME=$OPTARG;;
     o)  OPTIONS=$OPTARG;;
     j)  JAVA_BIN=$OPTARG;;
+    l)  HEAP_MAX=$OPTARG;;
     h)  hlp="yes";;
     p)  perform="yes";;
     *)  unknown="yes";;
@@ -30,7 +34,7 @@ done
 
 # usage
 HELP="
-usage: $0 [ -n value -w value -c value -o value -p -h ]
+usage: $0 [ -n value -w value -c value -o value -l value -p -h ]
   -n --> Name of JVM process < value
   -w --> Warning Percentage < value
   -c --> Critical Percentage < value
@@ -38,6 +42,16 @@ usage: $0 [ -n value -w value -c value -o value -p -h ]
   -j --> path to java bin dir (include trailing /)
   -p --> print out performance data
   -h --> print this help screen
+  -l --> limit, valid value max or current (default current)
+         current: when -Xms and -Xmx same value
+         max: when -Xms and -Xmx have different values
+
+Requirement: User that launch script must be permisions in sudoers for jps,jstat,jmap
+sudoers lines suggested:
+----------
+sensu ALL=(ALL) NOPASSWD: /usr/bin/jps, /usr/bin/jstat, /usr/bin/jmap
+Defaults:sensu !requiretty
+----------
 "
 
 if [ "$hlp" = "yes" ]; then
@@ -62,7 +76,7 @@ fi
 JSTAT=$(sudo ${JAVA_BIN}jstat -gc $PID  | tail -n 1)
 
 # Java 8 jstat -gc returns 17 columns Java 7 returns 15
-if [[ ${#JSTAT[@]} -gt 15 ]]; then
+if [[ $(echo $JSTAT| wc -w) -gt 15 ]]; then
   # Metaspace is not a part of heap in Java 8
   #Get heap capacity of JVM
   TotalHeap=$(echo $JSTAT | awk '{ print ($1 + $2 + $5 + $7) / 1024 }')
@@ -74,6 +88,14 @@ else
   TotalHeap=$(echo $JSTAT | awk '{ print ($1 + $2 + $5 + $7 + $9) / 1024 }')
   #Determine amount of used heap JVM is using
   UsedHeap=$(echo $JSTAT | awk '{ print ($3 + $4 + $6 + $8 + $10) / 1024 }')
+fi
+
+
+if [[ "$HEAP_MAX" == "max" ]]; then
+  TotalHeap=$(sudo ${JAVA_BIN}jmap -heap $PID 2> /dev/null | grep MaxHeapSize | tr -s " " | tail -n1 | awk '{ print $3 /1024 /1024 }')
+elif [ "$HEAP_MAX" != "" ] && [ "$HEAP_MAX" != "current" ]; then
+  echo "limit options must be max or current"
+  exit 3
 fi
 
 #Get heap usage percentage
