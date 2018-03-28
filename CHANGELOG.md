@@ -4,6 +4,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+### Breaking Changes
+- dropped ruby 2.1 support (@yuri-zubov sponsored by Actility, https://www.actility.com)
+- added `rest-client` as a dependency which requires you to have a local c compiler present to install this plugin (@yuri-zubov sponsored by Actility, https://www.actility.com)
+
+### Security
+- updated yard dependency to `~> 0.9.11` per: https://nvd.nist.gov/vuln/detail/CVE-2017-17042 (@yuri-zubov sponsored by Actility, https://www.actility.com)
+- updated rubocop dependency to `~> 0.51.0` per: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-8418. (@yuri-zubov sponsored by Actility, https://www.actility.com)
+
+### Added
+- Added ability to get metrics from VertX (@yuri-zubov sponsored by Actility, https://www.actility.com)
+- Added health-check VertX (@yuri-zubov sponsored by Actility, https://www.actility.com)
 
 ## [1.3.0] - 2017-09-05
 ### Added
