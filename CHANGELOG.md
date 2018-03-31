@@ -1,9 +1,11 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
+This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins/community/blob/master/HOW_WE_CHANGELOG.md)
 
 ## [Unreleased]
+
+## [2.0.0] - 2018-03-31
 ### Breaking Changes
 - dropped ruby 2.1 support (@yuri-zubov sponsored by Actility, https://www.actility.com)
 - added `rest-client` as a dependency which requires you to have a local c compiler present to install this plugin (@yuri-zubov sponsored by Actility, https://www.actility.com)
@@ -15,6 +17,9 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 ### Added
 - Added ability to get metrics from VertX (@yuri-zubov sponsored by Actility, https://www.actility.com)
 - Added health-check VertX (@yuri-zubov sponsored by Actility, https://www.actility.com)
+
+### Changed
+- updated Changelog guidelines location (@majormoses)
 
 ## [1.3.0] - 2017-09-05
 ### Added
@@ -83,7 +88,8 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-java/compare/1.3.0...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-java/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/sensu-plugins/sensu-plugins-java/compare/1.3.0...2.0.0
 [1.3.0]: https://github.com/sensu-plugins/sensu-plugins-java/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/sensu-plugins/sensu-plugins-java/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/sensu-plugins/sensu-plugins-java/compare/1.0.0...1.1.0
