@@ -6,6 +6,7 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 ## [Unreleased]
 
 ## [2.1.0] - 2020-04-09
+## [Unreleased]
 ### Breaking Changes
 - `english` 0.6.3 has been yanked - https://rubygems.org/gems/english/versions/0.6.3.
 
