@@ -5,6 +5,16 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 ## [Unreleased]
 
+## [3.0.0] - 2020-04-14
+### Breaking Changes
+- `english` 0.6.3 has been yanked - https://rubygems.org/gems/english/versions/0.6.3.
+- Bump minimum required ruby to 2.3
+- Update bundler development dep to `2.1` to match travis environment
+- Update sensu-plugin dep to `~> 4.0`. you can read the changelog entries for [4.0](https://github.com/sensu-plugins/sensu-plugin/blob/master/CHANGELOG.md#400---2018-02-17)
+- Update rake dep
+- Update robocup dep
+- Update yard dep
+
 ## [2.0.0] - 2018-03-31
 ### Breaking Changes
 - dropped ruby 2.1 support (@yuri-zubov sponsored by Actility, https://www.actility.com)
@@ -88,7 +98,8 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-java/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-java/compare/3.0.0...HEAD
+[3.0.0]: https://github.com/sensu-plugins/sensu-plugins-java/compare/2.0.0...3.0.0
 [2.0.0]: https://github.com/sensu-plugins/sensu-plugins-java/compare/1.3.0...2.0.0
 [1.3.0]: https://github.com/sensu-plugins/sensu-plugins-java/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/sensu-plugins/sensu-plugins-java/compare/1.1.0...1.2.0

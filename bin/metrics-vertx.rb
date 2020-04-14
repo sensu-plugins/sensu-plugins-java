@@ -46,7 +46,7 @@ class MetricsVertX < Sensu::Plugin::Metric::CLI::Graphite
 
   def metrics
     response = request
-    JSON.parse(response)
+    ::JSON.parse(response)
   end
 
   def run

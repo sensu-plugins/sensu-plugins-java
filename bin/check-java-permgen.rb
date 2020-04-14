@@ -64,7 +64,7 @@ class CheckJavaPermGen < Sensu::Plugin::Check::CLI
       exit_code = $CHILD_STATUS.exitstatus
       next if exit_code != 0
 
-      proc_permgen = (pu.to_f / pgcmx.to_f) * 100
+      proc_permgen = (pu / pgcmx.to_f) * 100
       warn_procs << java_proc if proc_permgen > config[:warn].to_f
       crit_procs << java_proc if proc_permgen > config[:crit].to_f
     end

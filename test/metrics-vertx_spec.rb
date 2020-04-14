@@ -1,6 +1,7 @@
 require_relative './spec_helper.rb'
 require_relative '../bin/metrics-vertx'
 require_relative './fixtures.rb'
+require 'json'
 
 describe 'MetricsVertX' do
   before do
