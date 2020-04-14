@@ -5,10 +5,15 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 ## [Unreleased]
 
-## [2.1.0] - 2020-04-09
-## [Unreleased]
+## [3.0.0] - 2020-04-14
 ### Breaking Changes
 - `english` 0.6.3 has been yanked - https://rubygems.org/gems/english/versions/0.6.3.
+- Bump minimum required ruby to 2.3
+- Update bundler development dep to `2.1` to match travis environment
+- Update sensu-plugin dep to `~> 4.0`. you can read the changelog entries for [4.0](https://github.com/sensu-plugins/sensu-plugin/blob/master/CHANGELOG.md#400---2018-02-17)
+- Update rake dep
+- Update robocup dep
+- Update yard dep
 
 ## [2.0.0] - 2018-03-31
 ### Breaking Changes
