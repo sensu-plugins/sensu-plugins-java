@@ -39,6 +39,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'redcarpet',                 '~> 3.2'
   s.add_development_dependency 'rspec',                     '~> 3.7'
   s.add_development_dependency 'rspec-mocks',               '~> 3.7'
-  s.add_development_dependency 'rubocop',                   '~> 0.80.1'
+  s.add_development_dependency 'rubocop',                   '~> 0.81.0'
   s.add_development_dependency 'yard',                      '~> 0.9.20'
 end
